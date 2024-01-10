@@ -3,7 +3,7 @@ body {
   font-family: 'Inter', sans-serif;;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('assets/app-background.jpg');
+  background-image: url('../public/assets/app-background.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 

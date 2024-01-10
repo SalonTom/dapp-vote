@@ -21,6 +21,7 @@ contract Voting is Ownable{
         bool hasVoted;
         uint votedProposalId;
     }
+
     struct Proposal {
         string description;
         uint voteCount;
@@ -36,7 +37,7 @@ contract Voting is Ownable{
     }
     
     modifier isWhitelisted () {
-        require (_whitelist[msg.sender]==true, "Cannot perform action because you are not whitelisted.");
+        require (_whitelist[msg.sender] == true, "Cannot perform action because you are not whitelisted.");
         _;
     }
 
@@ -45,12 +46,17 @@ contract Voting is Ownable{
 
     constructor() Ownable(msg.sender){ 
         _whitelist[msg.sender] = true;
-     }
+    }
 
-    function nextStep() external onlyOwner{
+    receive() external payable {}
+    fallback() external payable {}
+
+    function nextStep() public onlyOwner {
         emit WorkflowStatusChange(currentStep, WorkflowStatus(uint(currentStep) + 1));
         currentStep = WorkflowStatus(uint(currentStep) + 1);
         
+        // If last step, reset whitelist ... to be ready to start a new voting session.
+        // Maybe add a mapping (uint => mapping(proposition)) to store propositions by voting session id.
     }
 
     function registerVoters(address _address) public onlyOwner {
@@ -91,6 +97,10 @@ contract Voting is Ownable{
         }
         
         return winningProposals;
+    }
+
+    function getCurrentStep() public view returns (WorkflowStatus) {
+        return currentStep;
     }
     
 }

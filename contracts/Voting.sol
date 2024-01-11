@@ -60,6 +60,8 @@ contract Voting is Ownable{
     // Mapping to linj the proposal id to the proposal itself.
     mapping(uint => Proposal) private _idToProposal;
 
+    mapping(address => uint) private _adressIndex;
+
     // Index of the next proposal id during registration.
     uint private _indexProposal;
 
@@ -71,6 +73,8 @@ contract Voting is Ownable{
 
     /// Current status the session is in.
     WorkflowStatus internal currentStep = WorkflowStatus.RegisteringVoters;
+
+    address[] requesters;
     
     /// Modifier to check wheter the sender is whitelisted or not.
     modifier isWhitelisted () {
@@ -93,6 +97,13 @@ contract Voting is Ownable{
         currentStep = WorkflowStatus((uint(currentStep) + 1) % 6);
     }
 
+    function askAccess() public {
+        uint requesterId = requesters.length;
+        _adressIndex[msg.sender] = requesterId;
+
+        requesters.push(msg.sender);
+    }
+
     /// Function to whitelist/register voters. Restricted to the owner.
     function registerVoters(address _address) public onlyOwner {
 
@@ -101,6 +112,7 @@ contract Voting is Ownable{
 
         // Whitelist the address.
         _whitelist[_address] = true;
+        delete requesters[_adressIndex[msg.sender]];
 
         emit VoterRegistered(_address);
     }
@@ -165,5 +177,12 @@ contract Voting is Ownable{
     function getCurrentStep() public view returns (WorkflowStatus) {
         return currentStep;
     }
-    
+
+    function isUserWhitelisted(address _address) public view returns (bool) {
+        return _whitelist[_address];
+    }
+
+    function getRequesters() public view returns (address[] memory) {
+        return requesters;
+    }
 }

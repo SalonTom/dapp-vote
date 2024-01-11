@@ -1,6 +1,10 @@
 import './App.css';
-import Welcome from './welcome/Welcome';
 import ContractUtils from './utils/contractUtils';
+import UserUtils from './utils/userUtils';
+
+import Welcome from './components/welcome/Welcome';
+import Navbar from './components/navbar/Navbar';
+import RegisterProcess from './components/registerProcess/RegisterProcess';
 
 function App() {
 
@@ -8,22 +12,21 @@ function App() {
   const contractUtils = (new ContractUtils()).instance;
 
   const logCurrentStepAsync = async () => {
-    console.log(await contractUtils.methods.getCurrentStep().call());
+    localStorage.setItem('currentStep',Number(await contractUtils.methods.getCurrentStep().call()));
   }
 
   const nextStepAsync = async () => {
+    UserUtils.checkUserConnected();
     await contractUtils.methods.nextStep().send({ from: connectedAddress });
   }
-
+  logCurrentStepAsync();
   return (
     <div className="App">
       {
         connectedAddress != null ?
         <>
-          <h2>Connected as { connectedAddress }</h2>
-
-          <button onClick={logCurrentStepAsync}>get current step</button>
-          <button onClick={nextStepAsync}>Test next step</button>
+          <Navbar connectedAddress={connectedAddress}></Navbar>
+          <RegisterProcess connectedAddress={connectedAddress}></RegisterProcess>
         </>
         :
         <Welcome></Welcome>

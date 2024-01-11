@@ -4,6 +4,8 @@
   justify-content: center;
 
   height: 100vh;
+
+  position: relative;
 }
 
 .gradient-container {
@@ -67,4 +69,37 @@
   background-color: white;
   height: 24px;
   width: 24px;
+
+  display: block;
+}
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 30px;
+  border: none !important;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-info {
+  display: flex;
+  gap: 36px;
+  margin-top: 3px;
+}
+
+.logout-button-link {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.logout-button-link:hover {
+  font-weight: bold;
 }

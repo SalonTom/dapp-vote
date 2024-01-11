@@ -1,14 +1,19 @@
-import '../App.css';
-import { MetaMaskConnector } from '../connector/MetaMaskConnector';
+import '../../App.css';
+import ContractUtils from '../../utils/contractUtils';
+import { MetaMaskConnector } from '../../connector/MetaMaskConnector';
 
 function Welcome() {
+
+    const contractUtils = (new ContractUtils()).instance;
 
     const handleConnect = async () => {
         try {
             const connection = await MetaMaskConnector();
             if (connection) {
                 const { account } = connection;
-                localStorage.setItem("user_address", account);
+                localStorage.setItem('isWhiteListed', await contractUtils.methods.isUserWhitelisted(account).call())
+                localStorage.setItem("user_address", account.toLocaleLowerCase());
+                localStorage.setItem("user_role", await contractUtils.methods.owner().call() == account);
                 window.location.reload();
             }
         } catch (error) {

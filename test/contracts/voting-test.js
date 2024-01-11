@@ -12,6 +12,8 @@ const WorkflowStatus = {
   VotesTallied : 5
 }
 
+// TODO : use the libray provided in notion to deal with expected events.
+
 describe("Voting contract", function () {
 
   beforeEach(async () => {
@@ -148,6 +150,7 @@ describe("Voting contract", function () {
       } catch(error) {
         expect(error.message).to.include("Cannot perform action because you are not whitelisted.");
       }
+
     });
 
     it("Cannot register proposals if status not RegisteringVotes.", async () => {

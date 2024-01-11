@@ -89,8 +89,8 @@ contract Voting is Ownable{
     function nextStep() public onlyOwner {
 
         // Loop between all the status. Once the workflow comes to an end, the next step is to register voters again.
-        emit WorkflowStatusChange(currentStep, WorkflowStatus((uint(currentStep) + 1) % 5));
-        currentStep = WorkflowStatus(uint(currentStep) + 1);
+        emit WorkflowStatusChange(currentStep, WorkflowStatus((uint(currentStep) + 1) % 6));
+        currentStep = WorkflowStatus((uint(currentStep) + 1) % 6);
     }
 
     /// Function to whitelist/register voters. Restricted to the owner.
@@ -137,7 +137,7 @@ contract Voting is Ownable{
         if (voteCount > _maxCount) {
             _maxCount = voteCount;
             winningProposalIds = [_proposalId];
-        } else if (voteCount > _maxCount) {
+        } else if (voteCount == _maxCount) {
             winningProposalIds.push(_proposalId);
         }
 
@@ -147,11 +147,11 @@ contract Voting is Ownable{
         emit Voted(msg.sender, _proposalId);
     }
     
-    /// Function to get the winning proposals ids.
+    /// Function to get the winning proposals.
     function getWinningProposal() public view returns (Proposal[] memory) {
 
         // Check if the current step is right.
-        require (currentStep == WorkflowStatus.VotingSessionEnded,"Cannot get winner yet.");
+        // require (currentStep == WorkflowStatus.VotingSessionEnded, "Cannot get winner yet.");
         Proposal[] memory winningProposals = new Proposal[](winningProposalIds.length);
         
         for (uint i = 0 ; i < winningProposalIds.length ; i++) {

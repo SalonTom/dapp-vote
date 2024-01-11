@@ -4,11 +4,15 @@ import { MetaMaskConnector } from '../connector/MetaMaskConnector';
 function Welcome() {
 
     const handleConnect = async () => {
-        const connection = await MetaMaskConnector();
-        if (connection) {
-            const { account } = connection;
-            localStorage.setItem("user_address", account);
-            window.location.reload();
+        try {
+            const connection = await MetaMaskConnector();
+            if (connection) {
+                const { account } = connection;
+                localStorage.setItem("user_address", account);
+                window.location.reload();
+            }
+        } catch (error) {
+            alert("Error when connecting to metamask...");
         }
     };
 

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\001_IMT\\001_COURS\\BLOCKCHAIN\\001_PROJETS\\dapp-vote\\my-voting-dapp\\contracts\\Voting.sol": {
-      "lastModificationDate": 1704911832738,
-      "contentHash": "a58e0cbce0ba9a9a70bb0f96531bea8b",
+      "lastModificationDate": 1704973743700,
+      "contentHash": "50d6b7dfc8578d9a77fd69ef2e05b014",
       "sourceName": "contracts/Voting.sol",
       "solcConfig": {
         "version": "0.8.20",

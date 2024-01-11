@@ -1,4 +1,10 @@
 const { expect } = require("chai");
+// const {
+//   BN,           // Big Number support
+//   constants,    // Common constants, like the zero address and largest integers
+//   expectEvent,  // Assertions for emitted events
+//   expectRevert, // Assertions for transactions that should fail
+// } = require('@openzeppelin/test-helpers');
 
 let owner;
 let voting;
@@ -59,10 +65,34 @@ describe("Voting contract", function () {
 
       expect(await voting.getCurrentStep()).to.equal(WorkflowStatus.RegisteringVoters);
     });
+
+    it("Event WorkflowStatusChange is emitted with the former and new status", async () => {
+      // const receipt = await voting.nextStep();
+      // expectEvent(receipt, 'WorkflowStatusChange', {
+      //   previousStatus: 0,
+      //   newStatus: 1
+      // });
+
+      await expect(voting.nextStep())
+        .to.emit(voting, "WorkflowStatusChange")
+        .withArgs(0,1);
+    });
+  });
+
+  describe("askAccess()", function () {
+    it('should add user to requesters list on askAccess', async function () {
+      await voting.connect(nonOwner).askAccess();
+  
+      // Check if the user has been added to the requesters list
+      const userAddress = (await voting.getRequesters())[0];
+      expect(userAddress).to.equal(nonOwner.address);
+  
+    });
   });
 
   describe("registerVoters()", function () {
     it("Owner can register voters", async () => {
+      await voting.connect(nonOwner).askAccess()
       await voting.registerVoters(nonOwner);
     });
 
@@ -76,7 +106,7 @@ describe("Voting contract", function () {
 
     it("Cannot register voters if status not RegisteringVoters", async () => {
       try {
-        await voting.nextStep()
+        await voting.nextStep();
         await voting.registerVoters(nonOwner);
       } catch(error) {
         expect(error.message).to.include("Cannot register voters yet.");
@@ -88,6 +118,7 @@ describe("Voting contract", function () {
 
   describe("registerProposal()", function () {
     it("Whitelisted addresses can register proposals", async () => {
+      await voting.connect(nonOwner).askAccess()
       await voting.registerVoters(nonOwner);
       await voting.nextStep();
 
@@ -118,6 +149,7 @@ describe("Voting contract", function () {
 
   describe("registerVote()", function () {
     it("Whitelisted addresses can vote for a proposal", async () => {
+      await voting.connect(nonOwner).askAccess()
       await voting.registerVoters(nonOwner);
 
       // Status ProposalsRegistrationStarted
@@ -160,18 +192,16 @@ describe("Voting contract", function () {
         expect(error.message).to.include("Cannot register vote yet.");
       }
     });
-
-
-
-    // TODO : Check if vote is well registered (waiting for smart contrat method getRegisteredProposals()).
-    // TODO : Check if the winning propositions Ids are well updated after each vote.
   });
 
 
   describe("getWinnignPorposal", function () {
 
     it("Get winning proposals", async () => {
+      await voting.connect(nonOwner).askAccess()
       await voting.registerVoters(nonOwner);
+
+      await voting.connect(thirdOwner).askAccess()
       await voting.registerVoters(thirdOwner);
 
       // Status ProposalsRegistrationStarted

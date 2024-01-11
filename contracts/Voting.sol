@@ -60,6 +60,7 @@ contract Voting is Ownable{
     // Mapping to linj the proposal id to the proposal itself.
     mapping(uint => Proposal) private _idToProposal;
 
+    /// Mapping to link the address requesting to be whitelisted to the index in the array requesters.
     mapping(address => uint) private _adressIndex;
 
     // Index of the next proposal id during registration.
@@ -74,6 +75,7 @@ contract Voting is Ownable{
     /// Current status the session is in.
     WorkflowStatus internal currentStep = WorkflowStatus.RegisteringVoters;
 
+    /// Array with the address requesting to be whitelisted.
     address[] requesters;
     
     /// Modifier to check wheter the sender is whitelisted or not.
@@ -97,6 +99,7 @@ contract Voting is Ownable{
         currentStep = WorkflowStatus((uint(currentStep) + 1) % 6);
     }
 
+    /// Method to ask to be whitelisted.
     function askAccess() public {
         uint requesterId = requesters.length;
         _adressIndex[msg.sender] = requesterId;
@@ -107,8 +110,10 @@ contract Voting is Ownable{
     /// Function to whitelist/register voters. Restricted to the owner.
     function registerVoters(address _address) public onlyOwner {
 
+        // TODO : Add require to check if the address asked for access before.
+
         // Check if the status is right.
-        require (currentStep == WorkflowStatus.RegisteringVoters,"Cannot register voters yet.");
+        require (currentStep == WorkflowStatus.RegisteringVoters, "Cannot register voters yet.");
 
         // Whitelist the address.
         _whitelist[_address] = true;
@@ -178,10 +183,13 @@ contract Voting is Ownable{
         return currentStep;
     }
 
+    /// Merhod that returns true if the _address is whitelisted.
+    /// @param _address Address to check.
     function isUserWhitelisted(address _address) public view returns (bool) {
         return _whitelist[_address];
     }
 
+    /// Method to get the list of the addresses requesting to be whitelisted.
     function getRequesters() public view returns (address[] memory) {
         return requesters;
     }

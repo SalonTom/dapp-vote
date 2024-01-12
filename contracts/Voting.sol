@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.8.20;
+pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
 
 /// @title Voting is a smart contract manage voting sessions.
 /// @author Quentin GILLOT & Tom SALON
@@ -32,6 +33,12 @@ contract Voting is Ownable{
         uint votedProposalId;
     }
 
+    struct Proposition{
+        address owner;
+        Proposal proposal;
+        uint id;
+    }
+
     /// Struct to represent a proposal.
     struct Proposal {
         string description;
@@ -53,6 +60,9 @@ contract Voting is Ownable{
 
     // Mapping to track whether a voter has voted.
     mapping(address => bool) private _hasVoted;
+    
+    // Mapping to track who voted for which proposition.
+    mapping(address => uint) private _userVote;
 
     // Mapping to link proposal id to its owner's address.
     mapping(uint => address) private _proposalsOwnership;
@@ -160,19 +170,19 @@ contract Voting is Ownable{
 
         // Register the vote for the sender. He won't be able to vote for an other proposal.
         _hasVoted[msg.sender] = true;
+        _userVote[msg.sender] = _proposalId;
 
         emit Voted(msg.sender, _proposalId);
     }
     
     /// Function to get the winning proposals.
-    function getWinningProposal() public view returns (Proposal[] memory) {
+    function getWinningProposal() public view returns (Proposition[] memory) {
 
-        // Check if the current step is right.
-        // require (currentStep == WorkflowStatus.VotingSessionEnded, "Cannot get winner yet.");
-        Proposal[] memory winningProposals = new Proposal[](winningProposalIds.length);
+        Proposition[] memory winningProposals = new Proposition[](winningProposalIds.length);
         
         for (uint i = 0 ; i < winningProposalIds.length ; i++) {
-            winningProposals[i] = _idToProposal[winningProposalIds[i]];
+            uint winningProposalId = winningProposalIds[i];
+            winningProposals[i] = (Proposition(_proposalsOwnership[winningProposalId],_idToProposal[winningProposalId], winningProposalId));
         }
         
         return winningProposals;
@@ -192,5 +202,26 @@ contract Voting is Ownable{
     /// Method to get the list of the addresses requesting to be whitelisted.
     function getRequesters() public view returns (address[] memory) {
         return requesters;
+    }
+
+    function getAllProposals() public view returns (Proposition[] memory) {
+        uint totalProposals = _indexProposal;
+
+        Proposition[] memory propositions = new Proposition[](totalProposals);
+        for (uint i = 0; i < totalProposals; i++) {
+            propositions[i] = (Proposition(_proposalsOwnership[i],_idToProposal[i],i));
+        }
+
+        return propositions;
+    }
+
+    function getUserHasVoted(address _address) public view returns (bool) {
+        return _hasVoted[_address];
+    }
+
+    function getUserVote(address _address) public view returns (uint) {
+        require(_hasVoted[_address], "User hasn't voted yet.");
+
+        return _userVote[_address];
     }
 }

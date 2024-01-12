@@ -10,7 +10,7 @@ function RegisterProcess({ connectedAddress }) {
 
     const askAccessAsync = async () => {
         try {
-            await UserUtils.checkUserConnected();
+            UserUtils.checkUserConnected();
             await contractUtils.methods.askAccess().send({ from: connectedAddress });
             window.location.reload();
         } catch (error) {
@@ -82,7 +82,7 @@ function RegisterProcess({ connectedAddress }) {
     }, []);
 
     return (
-        <div className="gradient-container">
+        <div className="gradient-container rounded">
             {content}
         </div>
     );

@@ -13,14 +13,7 @@ function Requester({ owner, whitelisted }) {
     };
   
     return (
-      <div
-        className="rounded"
-        style={{
-          border: "1px white solid",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="rounded list-entry">
         <div>{owner}</div>
         {whitelisted == true ? (
           <div>
@@ -33,7 +26,7 @@ function Requester({ owner, whitelisted }) {
           <div className="button" onClick={whitelistAsync}>
             <i
               className="icon"
-              style={{ mask: "url(./assets/svg/vote.svg)" }}
+              style={{ mask: "url(./assets/svg/assignment_turned.svg)" }}
             ></i>
           </div>
         )}

@@ -57,22 +57,23 @@ function ProposalList({ connecteddAddress, currentStep }) {
                     <div className='title'>Proposition list</div>
                     {currentStep == '1'? (
                         <div className='logout-button-link' onClick={manageModale}>
-                            Register new process
+                            <i className='icon' style={{ mask : "url(./assets/svg/add.svg)"}}></i>
+                            <div>Register new process</div>
                         </div>
                     ) : null}
                 </div>
-                <div style={{display : "flex" , gap : '12px', flexDirection : "column"}}>
-                 {proposalList.map((proposal, index) => <Proposal key={index} description={proposal.proposal.description} owner={proposal.owner} currentStep={currentStep} id={proposal.id} votes={proposal.proposal.voteCount} connecteddAddress={connecteddAddress} userVote={userVote}></Proposal> )}
+                <div style={{display : "flex" , gap : '12px', flexDirection : "column", marginTop: "32px"}}>
+                    {proposalList.map((proposal, index) => <Proposal key={index} description={proposal.proposal.description} owner={proposal.owner} currentStep={currentStep} id={proposal.id} votes={proposal.proposal.voteCount} connecteddAddress={connecteddAddress} userVote={userVote}></Proposal> )}
                 </div>
             </div>
             {
                 modaleIsOpen ?
                 <div className='modale-container'>
-                    <div className='modale-proposal gradient-container rounded'>
+                    <div className='modale-proposal gradient-container rounded' style={{ boxSizing:"content-box"}}>
                         <div className='title'>
-                            Add new proposition {proposalList.length}   
+                            Add new proposition
                         </div>
-                        <div>
+                        <div style={{ marginTop : "36px"}}>
                             <input
                                 type='text'
                                 placeholder='Proposal Description'
@@ -80,12 +81,12 @@ function ProposalList({ connecteddAddress, currentStep }) {
                                 onChange={(e) => setInputValue(e.target.value)}
                             ></input>
                         </div>
-                        <div style={{ display: "flex", justifyContent : "end", gap : "24px"}}>
+                        <div style={{ display: "flex", justifyContent : "end", gap : "24px", marginTop : "36px"}}>
                             <div className='logout-button-link' onClick={manageModale}>
                                 Cancel
                             </div>
-                            <div className='button'>
-                                <div className='body bold' onClick={registerProposalAsync}>Add proposal</div>
+                            <div className='button' onClick={registerProposalAsync}>
+                                <div className='body bold'>Add proposition</div>
                             </div>
                         </div>
                     </div>

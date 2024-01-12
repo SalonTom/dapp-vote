@@ -23,16 +23,14 @@ function AskAccess({ connectedAddress }) {
                 <div className='title'>
                     Wait a minute...
                 </div>
-                <div>
+                <div style={{ marginTop: "12px" }}>
                     You haven't been whitelisted by the admin yet.
                     <br />
                     <br />
                     Hit the “Ask access to the voting session” to notify the admin.
                 </div>
-                <div>
-                    <div className='button' onClick={askAccessAsync}>
-                        <div className='body bold'>Ask access to the voting session</div>
-                    </div>
+                <div className='button' onClick={askAccessAsync} style={{ marginTop: "36px", marginLeft : "auto", marginRight : "auto"}}>
+                    <div className='body bold'>Ask access to the voting session</div>
                 </div>
             </div>
         </div>

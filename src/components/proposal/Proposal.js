@@ -12,12 +12,12 @@ function Proposal({ connecteddAddress, description, owner, currentStep, id, vote
 
     console.log(userVote)
     return (
-        <div className="rounded" style={{ border: "1px white solid", display: "flex", justifyContent: "space-between" }}>
+        <div className="rounded list-entry" style={{ border: "1px white solid", display: "flex", justifyContent: "space-between" }}>
             <div>
                 <div className="body bold">{description}</div>
                 <div>{owner}</div>
             </div>
-            <div>{Number(votes)}</div>
+            <div style={{ display: "flex", gap:"16px", alignItems: "center"}}>
             {
                 (currentStep == '3' || currentStep == '4') ? (
                     <>
@@ -37,6 +37,7 @@ function Proposal({ connecteddAddress, description, owner, currentStep, id, vote
                             </>
 
                         }
+                        <div className='bold'>{Number(votes)}</div>
                     </>
             ) : 
             <>
@@ -51,6 +52,7 @@ function Proposal({ connecteddAddress, description, owner, currentStep, id, vote
                     null
                 }
             </> }
+            </div>
 
         </div>
     );

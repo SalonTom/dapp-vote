@@ -4,6 +4,7 @@ function WaitForSessionToStart() {
             <div className='title'>
                 The session hasn't started yet :/
             </div>
+            <br/>
             <div>
                 The admin is still letting new voters to the session.
             </div>

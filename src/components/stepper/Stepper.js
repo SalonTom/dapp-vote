@@ -17,9 +17,9 @@ function Stepper({ connectedAddress }) {
         return <Welcome></Welcome>
     }
 
-    // if (userIsAdmin == "true") {
-    //     return <AdminDashboard></AdminDashboard>
-    // }
+    if (userIsAdmin == "true") {
+        return <AdminDashboard></AdminDashboard>
+    }
 
     if (currentStep != 0 && isWhiteListed == "false") {
         return <NextForNextSession></NextForNextSession>

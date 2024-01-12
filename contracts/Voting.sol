@@ -45,6 +45,11 @@ contract Voting is Ownable{
         uint voteCount;
     }
 
+    struct addWhiteList {
+        address owner;
+        bool wL;
+    }
+
     /// Enum for the different status of a voting session.
     enum WorkflowStatus {
         RegisteringVoters,
@@ -118,7 +123,7 @@ contract Voting is Ownable{
     }
 
     /// Function to whitelist/register voters. Restricted to the owner.
-    function registerVoters(address _address) public onlyOwner {
+    function registerVoter(address _address) public onlyOwner {
 
         // TODO : Add require to check if the address asked for access before.
 
@@ -127,7 +132,6 @@ contract Voting is Ownable{
 
         // Whitelist the address.
         _whitelist[_address] = true;
-        delete requesters[_adressIndex[msg.sender]];
 
         emit VoterRegistered(_address);
     }
@@ -223,5 +227,16 @@ contract Voting is Ownable{
         require(_hasVoted[_address], "User hasn't voted yet.");
 
         return _userVote[_address];
+    }
+
+    function getWhitelist() public view returns (addWhiteList[] memory) {
+        addWhiteList[] memory res = new addWhiteList[](requesters.length);
+
+        for (uint i = 0; i < requesters.length; i++) {
+            bool isRequesterWhitelisted = _whitelist[requesters[i]];
+            res[i] = addWhiteList(requesters[i], isRequesterWhitelisted);
+        }
+
+        return res;
     }
 }

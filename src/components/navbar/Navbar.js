@@ -19,9 +19,6 @@ function Navbar({ connectedAddress }) {
     return (
         <div className="navbar gradient-container">
             <div className='title'>TRUST!ES</div>
-            <div className='button' onClick={nextStepAsync}>
-                NEXT STEP
-            </div>
             <div className='navbar-info'>
                 <div style={{ display : "flex", alignItems : "center", gap: "4px" }}>
                     <div className='body bold'>Logged in as :</div> 

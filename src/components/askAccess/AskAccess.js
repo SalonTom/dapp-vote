@@ -18,7 +18,7 @@ function AskAccess({ connectedAddress }) {
     };
 
     return (
-        <div style={{ width: "100vw", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center"}}>
             <div className='gradient-container rounded'>
                 <div className='title'>
                     Wait a minute...

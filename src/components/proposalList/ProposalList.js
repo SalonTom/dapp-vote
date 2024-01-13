@@ -20,6 +20,7 @@ function ProposalList({ connecteddAddress, currentStep }) {
         updatedProposalList.push({ id : proposalList.length, owner : connecteddAddress , proposal : { description : newProposalDescription, voteCount: 0}});
 
         setProposalList(updatedProposalList);
+        setInputValue('');
         manageModale();
     };
 

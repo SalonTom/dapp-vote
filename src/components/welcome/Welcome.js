@@ -17,6 +17,7 @@ function Welcome() {
                 window.location.reload();
             }
         } catch (error) {
+            console.log(error);
             alert("Error when connecting to metamask...");
         }
     };

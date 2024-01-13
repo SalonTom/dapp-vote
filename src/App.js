@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     const logCurrentStepAsync = async () => {
       localStorage.setItem('currentStep',Number(await contractUtils.methods.getCurrentStep().call()));
+      localStorage.setItem('isWhiteListed', await contractUtils.methods.isUserWhitelisted(account).call());
     };
 
     logCurrentStepAsync();

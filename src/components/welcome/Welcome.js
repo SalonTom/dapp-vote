@@ -11,7 +11,7 @@ function Welcome() {
             const connection = await MetaMaskConnector();
             if (connection) {
                 const { account } = connection;
-                localStorage.setItem('isWhiteListed', await contractUtils.methods.isUserWhitelisted(account).call())
+                localStorage.setItem('isWhiteListed', await contractUtils.methods.isUserWhitelisted(account).call());
                 localStorage.setItem("user_address", account.toLocaleLowerCase());
                 localStorage.setItem("user_role", await contractUtils.methods.owner().call() == account);
                 window.location.reload();

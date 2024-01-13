@@ -3,18 +3,19 @@ import ContractUtils from '../../utils/contractUtils';
 import UserUtils from '../../utils/userUtils';
 import { useState, useEffect } from "react";
 
-function AdminDashboard() {
+function AdminDashboard({ connectedAddress }) {
 
     const contractUtils = (new ContractUtils()).instance;
-    const connectedAddress = localStorage.getItem("user_address");
-    const currentStep = localStorage.getItem("currentStep");
-    
+
+    const [currentStep, setCurrentStep] = useState(parseInt(localStorage.getItem("currentStep"), 10));
     const [proposalList, setProposalList] = useState([])
 
     const nextStepAsync = async () => {
         UserUtils.checkUserConnected();
         await contractUtils.methods.nextStep().send({ from: connectedAddress });
-        window.location.reload();
+        const newCurrentStep = (currentStep + 1) % 6;
+        localStorage.setItem("currentStep", newCurrentStep);
+        setCurrentStep(newCurrentStep);
     }
 
     useEffect(() => {
@@ -23,7 +24,7 @@ function AdminDashboard() {
         };
 
         getProposalListAsync();
-    });
+    }, []);
 
     return (
         <>
@@ -66,7 +67,7 @@ function AdminDashboard() {
                     </div>
                 </div>
                 <div style={{ flexGrow: 1 }}>
-                    <RequesterList></RequesterList>
+                    <RequesterList connectedAddress={connectedAddress}></RequesterList>
                 </div>
             </div>
         </>

@@ -9,14 +9,27 @@ function ProposalList({ connecteddAddress, currentStep }) {
 
     const contractUtils = (new ContractUtils()).instance;
 
-    const  [proposalList,setProposalList] = useState([]);
+    const  [proposalList, setProposalList] = useState([]);
     const [newProposalDescription, setInputValue] = useState('');
 
     const registerProposalAsync = async () => {
         console.log('Description : ', newProposalDescription);
 
         await contractUtils.methods.registerProposal(newProposalDescription).send({ from : connecteddAddress });
-        window.location.reload();
+        const updatedProposalList = [...proposalList];
+        updatedProposalList.push({ id : proposalList.length, owner : connecteddAddress , proposal : { description : newProposalDescription, voteCount: 0}});
+
+        setProposalList(updatedProposalList);
+        manageModale();
+    };
+
+    const voteProposalAsync = async (proposalId) => {
+        await contractUtils.methods.registerVote(proposalId).send({ from : connecteddAddress });
+        const updatedProposalListWithVote = [...proposalList];
+        updatedProposalListWithVote[proposalId].proposal.voteCount++;
+
+        setProposalList(updatedProposalListWithVote);
+        setUserVote(proposalId);
     }
 
     const [modaleIsOpen, setModaleIsOpen] = useState(false);
@@ -62,8 +75,19 @@ function ProposalList({ connecteddAddress, currentStep }) {
                         </div>
                     ) : null}
                 </div>
-                <div style={{display : "flex" , gap : '12px', flexDirection : "column", marginTop: "32px"}}>
-                    {proposalList.map((proposal, index) => <Proposal key={index} description={proposal.proposal.description} owner={proposal.owner} currentStep={currentStep} id={proposal.id} votes={proposal.proposal.voteCount} connecteddAddress={connecteddAddress} userVote={userVote}></Proposal> )}
+                <div style={{ display: "flex", gap: '12px', flexDirection: "column", marginTop: proposalList.length ? "32px" : "" }}>
+                    {
+                        proposalList.map((proposal, index) => 
+                            <Proposal 
+                                key={index}
+                                description={proposal.proposal.description}
+                                owner={proposal.owner} currentStep={currentStep}
+                                id={proposal.id} votes={proposal.proposal.voteCount}
+                                userVote={userVote}
+                                voteProposalAsync={voteProposalAsync}>
+                                </Proposal>
+                        )
+                    }
                 </div>
             </div>
             {

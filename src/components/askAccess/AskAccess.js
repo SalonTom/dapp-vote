@@ -1,20 +1,9 @@
 import '../../App.css';
 
-import ContractUtils from '../../utils/contractUtils';
-import UserUtils from '../../utils/userUtils';
+function AskAccess({ askAccessAsync }) {
 
-function AskAccess({ connectedAddress }) {
-    const contractUtils = (new ContractUtils()).instance;
-
-    const askAccessAsync = async () => {
-        try {
-            UserUtils.checkUserConnected();
-            await contractUtils.methods.askAccess().send({ from: connectedAddress });
-            localStorage.setItem("userIsRequester", true);
-            window.location.reload();
-        } catch (error) {
-            console.error("Error asking for access:", error);
-        }
+    const handleOnClick = () => {
+        askAccessAsync();
     };
 
     return (
@@ -29,7 +18,7 @@ function AskAccess({ connectedAddress }) {
                     <br />
                     Hit the “Ask access to the voting session” to notify the admin.
                 </div>
-                <div className='button' onClick={askAccessAsync} style={{ marginTop: "36px", marginLeft : "auto", marginRight : "auto"}}>
+                <div className='button' onClick={handleOnClick} style={{ marginTop: "36px", marginLeft : "auto", marginRight : "auto"}}>
                     <div className='body bold'>Ask access to the voting session</div>
                 </div>
             </div>

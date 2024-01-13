@@ -1,21 +1,21 @@
 import RequesterList from "../requesterList/RequesterList";
 import ContractUtils from '../../utils/contractUtils';
 import UserUtils from '../../utils/userUtils';
-import '../../App.css';
 import { useState, useEffect } from "react";
 
-function AdminDashboard() {
+function AdminDashboard({ connectedAddress }) {
 
     const contractUtils = (new ContractUtils()).instance;
-    const connectedAddress = localStorage.getItem("user_address");
-    const currentStep = localStorage.getItem("currentStep");
-    
+
+    const [currentStep, setCurrentStep] = useState(parseInt(localStorage.getItem("currentStep"), 10));
     const [proposalList, setProposalList] = useState([])
 
     const nextStepAsync = async () => {
         UserUtils.checkUserConnected();
         await contractUtils.methods.nextStep().send({ from: connectedAddress });
-        window.location.reload();
+        const newCurrentStep = (currentStep + 1) % 6;
+        localStorage.setItem("currentStep", newCurrentStep);
+        setCurrentStep(newCurrentStep);
     }
 
     useEffect(() => {
@@ -24,17 +24,17 @@ function AdminDashboard() {
         };
 
         getProposalListAsync();
-    });
+    }, []);
 
     return (
         <>
-            <div className='gradient-container rounded' style={{ margin: "32px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between"}}>
+            <div className='gradient-container rounded' style={{ margin: "32px", padding : "16px 32px"}}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                     <div>
-                        Current step : <span className='title'>{ currentStep }</span>
+                        Current step : <span className='bold'>{ currentStep }</span>
                     </div>
                     <div className='button' onClick={nextStepAsync}>
-                        Next session status
+                        Start next phase
                     </div>
                 </div>
             </div>
@@ -53,8 +53,8 @@ function AdminDashboard() {
                                 proposalList.length == 0 ?
                                 <span className="body">No proposal have been registered yet...</span>
                                 :
-                                proposalList.map((proposal, index) => 
-                                    <div className="rounded" style={{ border: "1px white solid", display: "flex", justifyContent: "space-between" }}>
+                                proposalList.map((proposal) => 
+                                    <div className="rounded list-entry">
                                         <div>
                                             <div className="body bold">{proposal.proposal.description}</div>
                                             <div>{proposal.owner}</div>
@@ -67,7 +67,7 @@ function AdminDashboard() {
                     </div>
                 </div>
                 <div style={{ flexGrow: 1 }}>
-                    <RequesterList></RequesterList>
+                    <RequesterList connectedAddress={connectedAddress}></RequesterList>
                 </div>
             </div>
         </>

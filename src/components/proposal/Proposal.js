@@ -1,23 +1,16 @@
-import ContractUtils from '../../utils/contractUtils';
+function Proposal({ description, owner, currentStep, id, votes, userVote, voteProposalAsync }) {
 
-function Proposal({ connecteddAddress, description, owner, currentStep, id, votes, userVote }) {
-
-    const contractUtils = (new ContractUtils()).instance;
-
-    const voteProposalAsync = async () => {
-
-        await contractUtils.methods.registerVote(id).send({ from : connecteddAddress });
-        window.location.reload();
+    const handleOnClick = () => {
+        voteProposalAsync(id);
     }
 
-    console.log(userVote)
     return (
-        <div className="rounded" style={{ border: "1px white solid", display: "flex", justifyContent: "space-between" }}>
+        <div className="rounded list-entry" style={{ border: "1px white solid", display: "flex", justifyContent: "space-between", cursor: "default", backgroundColor : userVote == id ? "rgba(255,255,255,0.3)" : ""}}>
             <div>
                 <div className="body bold">{description}</div>
                 <div>{owner}</div>
             </div>
-            <div>{Number(votes)}</div>
+            <div style={{ display: "flex", gap:"16px", alignItems: "center"}}>
             {
                 (currentStep == '3' || currentStep == '4') ? (
                     <>
@@ -28,7 +21,7 @@ function Proposal({ connecteddAddress, description, owner, currentStep, id, vote
                             <>
                                 {
                                     userVote == -1 ?
-                                        <div className='button' onClick={voteProposalAsync}>
+                                        <div className='button' onClick={handleOnClick}>
                                             <i className='icon' style={{ mask: "url(./assets/svg/vote.svg)" }}></i>
                                         </div>
                                     :
@@ -37,6 +30,7 @@ function Proposal({ connecteddAddress, description, owner, currentStep, id, vote
                             </>
 
                         }
+                        <div className='bold'>{Number(votes)}</div>
                     </>
             ) : 
             <>
@@ -51,6 +45,7 @@ function Proposal({ connecteddAddress, description, owner, currentStep, id, vote
                     null
                 }
             </> }
+            </div>
 
         </div>
     );

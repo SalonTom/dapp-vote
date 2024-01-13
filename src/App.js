@@ -1,11 +1,8 @@
 import './App.css';
 import ContractUtils from './utils/contractUtils';
-import UserUtils from './utils/userUtils';
 import { useEffect } from 'react';
 
-import Welcome from './components/welcome/Welcome';
 import Navbar from './components/navbar/Navbar';
-import RegisterProcess from './components/registerProcess/RegisterProcess';
 import Stepper from './components/stepper/Stepper';
 
 function App() {

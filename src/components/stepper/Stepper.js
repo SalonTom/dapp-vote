@@ -1,3 +1,6 @@
+import ContractUtils from '../../utils/contractUtils';
+import UserUtils from '../../utils/userUtils';
+
 import Welcome from '../../components/welcome/Welcome';
 import AdminDashboard from '../../components/adminDashboard/AdminDashboard';
 import NextForNextSession from '../../components/nextForNextSession/NextForNextSession';
@@ -5,20 +8,34 @@ import RequestSent from '../../components/requestSent/RequestSent';
 import AskAccess from '../../components/askAccess/AskAccess';
 import WaitForSessionToStart from '../../components/waitForSessionToStart/WaitForSessionToStart';
 import ProposalList from '../../components/proposalList/ProposalList';
+import { useState } from 'react';
 
 function Stepper({ connectedAddress }) {
 
     const userIsAdmin = localStorage.getItem("user_role");
     const currentStep = localStorage.getItem("currentStep");
     const isWhiteListed = localStorage.getItem("isWhiteListed");
-    const userIsRequester = localStorage.getItem("userIsRequester");
+    const [userIsRequester, setUserIsRequester] = useState(localStorage.getItem("userIsRequester"));
+
+    const contractUtils = (new ContractUtils()).instance;
+
+    const askAccessAsync = async () => {
+        try {
+            UserUtils.checkUserConnected();
+            await contractUtils.methods.askAccess().send({ from: connectedAddress });
+            localStorage.setItem("userIsRequester", true);
+            setUserIsRequester("true");
+        } catch (error) {
+            console.error("Error asking for access:", error);
+        }
+    };
 
     if (connectedAddress == null) {
         return <Welcome></Welcome>
     }
 
     if (userIsAdmin == "true") {
-        return <AdminDashboard></AdminDashboard>
+        return <AdminDashboard connectedAddress={connectedAddress}></AdminDashboard>
     }
 
     if (currentStep != 0 && isWhiteListed == "false") {
@@ -32,7 +49,7 @@ function Stepper({ connectedAddress }) {
         }
 
         if (isWhiteListed == "false") {
-            return <AskAccess connectedAddress={connectedAddress}></AskAccess>
+            return <AskAccess askAccessAsync={askAccessAsync}></AskAccess>
         } else {
             return <WaitForSessionToStart></WaitForSessionToStart>
         }

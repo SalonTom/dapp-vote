@@ -1,4 +1,4 @@
-#[SCHOOL PROJECT]
+# [SCHOOL PROJECT]
 
 `GILLOT Quentin / SALON Tom`
 

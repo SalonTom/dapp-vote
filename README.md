@@ -1,70 +1,24 @@
-# Getting Started with Create React App
+#[SCHOOL PROJECT]
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+`GILLOT Quentin / SALON Tom`
 
-## Available Scripts
+# Trust!es, dApp vote between friends -  ReactJs, Solidity
 
-In the project directory, you can run:
+Ce projet vise à créer une DApp de vote transparente et sécurisée pour une petite organisation. Utilisez Solidity pour développer le smart contract "Voting" qui permettra l'enregistrement d'une liste blanche d'électeurs, la proposition d'idées, le vote et le décompte des résultats.
 
-### `npm start`
+![Voter view](image.png)
+![Admin view](image-1.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Organisation du travail au sein du groupe
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+En raison de problèmes techniques sur l'un de nos ordinateurs, nous n'avions qu'un seul poste pour deux personnes. Nous avons donc travaillé en pair programming pendant toute la durée du projet. Chacun a pu apporter son expérience sur les deux parties de l'application : le contrat et le frontend.
 
-### `npm test`
+Le développement du contrat a été rapide. Les principaux défis auxquels nous avons été confrontés étaient dus à notre connaissance (très) limitée de ReactJs. Beaucoup d'incompréhensions et de bugs très frustrants, compte tenu du peu de temps qui nous était imparti pour concevoir cette DApp. Néanmoins, nous avons persévéré et réussi à terminer le projet dans les temps.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Lien vers les différentes ressources
 
-### `npm run build`
+* [Vidéo de démonstration](https://drive.google.com/file/d/1C2KGmxRyBXev66J7Lzl_ZT7CCYPzpSxU/view?usp=sharing)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* [App vercel](https://trusties.vercel.app/) pour jouer avec l'application. Quentin est l'admin du contrat.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* [Etherscan](https://sepolia.etherscan.io/address/0x7714c959Dc736cef0627f551F2AA6167798a1965) pour visualiser le contrat déployé sur le testnet sepolia.
